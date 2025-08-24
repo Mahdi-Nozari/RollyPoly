@@ -13,8 +13,8 @@
 Adafruit_NeoPixel lights(LED_COUNT, LED_IN, NEO_GRB + NEO_KHZ800);
 
 // controller values
-float Kp = 5.0, Ki = 5, Kd = 0.0;
-float setpoint = 145; //kPa
+float Kp = 20, Ki = 6, Kd = 0.5;
+float setpoint = 110; //kPa
 float Ts = 0.05; //s
 
 // Errors
@@ -26,22 +26,6 @@ volatile bool controlFlag = false;
 volatile float pressure = 0.0;
 void controlISR(){
   controlFlag=true;
-  //pressure = readPressure_kPa();
-  // e_k = setpoint - pressure;
-  // u_k =   u_k1
-  //       + Kp * (e_k - e_k1)
-  //       + Ki * Ts * e_k
-  //       + (Kd / Ts) * (e_k - 2 * e_k1 + e_k2);
-
-  // if (u_k > 255) u_k = 255;
-  // if (u_k < 0)   u_k = 0;
-
-  //analogWrite(PUMP1, int(u_k));
-  //analogWrite(PUMP2, int(u_k));
-  //Serial.println(pressure, 2);
-  //e_k2 = e_k1;
-  //e_k1 = e_k;
-  //u_k1 = u_k;
 }
 
 
@@ -53,12 +37,12 @@ void setup() {
   lights.show();
   lights.setBrightness(max_brightness);
 
-  // theaterChase(lights, lights.Color(127, 127, 127), 50);
-  // lights.clear();
-  // lights.show();
+  theaterChase(lights, lights.Color(255, 0, 0), 50);
+  lights.clear();
+  lights.show();
   delay(2000);
 
-  Timer1.initialize(50000);
+  Timer1.initialize(20000);
   Timer1.attachInterrupt(controlISR);
 }
 
